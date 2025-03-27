@@ -11,7 +11,7 @@
 - **Middleware**: Validadores de tokens JWT para as rotas com o middleware adicionado (JwtAuthMiddleware).
 - **Controllers**: Lista usuários com paginação (UserController) e lida com upload do arquivo csv e consulta status (ImportController).
 
-Desenvolvi uma API no Laravel 12 para importar CSVs, com autenticação JWT via token fixo gerado por seeder, rotas protegidas e uma pública, usando filas para processamento assíncrono. Implementei camadas de services, repository e testes unitários/integração. Resolvi erros como RouteNotFoundException criando um middleware personalizado e adaptei o `bootstrap/app.php` para o Laravel 11 e Docker. Tive dificuldades com a configuração inicial do JWT (ex.: getAuthIdentifierName) e ajustes no Docker. Pensei em simplificar a autenticação com token fixo para facilitar uso inicial e optei por enums para padronizar mensagens, melhorando manutenção.
+Desenvolvi uma API no Laravel 12 para importar CSVs, com autenticação JWT via token fixo gerado por seeder, rotas protegidas e uma pública, usando filas para processamento assíncrono. Implementei camadas de services, repository e testes unitários/integração. Resolvi erros como RouteNotFoundException criando um middleware personalizado e adaptei o `bootstrap/app.php` para o Laravel 12 e Docker. Tive dificuldades com a configuração inicial do JWT (ex.: getAuthIdentifierName) e ajustes no Docker. Pensei em simplificar a autenticação com token fixo para facilitar uso inicial e optei por enums para padronizar mensagens, melhorando manutenção.
 
 ## Instruções para uso
 
