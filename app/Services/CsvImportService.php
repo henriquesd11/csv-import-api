@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ImportResponses;
 use App\Repositories\UserRepository;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -38,13 +39,15 @@ class CsvImportService
             ];
 
             $validator = Validator::make($data, [
-                'name' => 'required',
+                'name' => 'required|string|min:3|max:255',
                 'email' => 'required|email|unique:users,email',
                 'birth_date' => 'required|date_format:Y-m-d',
             ]);
 
             if ($validator->fails()) {
-                Log::warning('Erro na validação da linha', ['data' => $data, 'errors' => $validator->errors()]);
+                Log::warning(
+                    ImportResponses::VALIDATION_ERROR->value, ['data' => $data, 'errors' => $validator->errors()]
+                );
                 continue;
             }
 
@@ -60,9 +63,9 @@ class CsvImportService
     public function validIfFileExists(string $filePath): bool
     {
         if (!file_exists($filePath)) {
-            Log::error('Arquivo não encontrado', ['file_path' => $filePath]);
+            Log::error(ImportResponses::FILE_NOT_FOUND->value, ['file_path' => $filePath]);
 
-            throw new Exception('Arquivo não encontrado: ' . $filePath);
+            throw new Exception(ImportResponses::FILE_NOT_FOUND->value . $filePath);
         }
 
         return true;
@@ -74,9 +77,9 @@ class CsvImportService
     public function validOpenFile($file, string $fulPath): bool
     {
         if (!$file) {
-            Log::error("Erro ao abrir arquivo: {$fulPath}");
+            Log::error(ImportResponses::ERROR_OPENING_FILE->value . $fulPath);
 
-            throw new Exception("Erro ao abrir arquivo: {$fulPath}");
+            throw new Exception(ImportResponses::ERROR_OPENING_FILE->value . $fulPath);
         }
 
         return true;

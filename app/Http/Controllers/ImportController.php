@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ImportResponses;
 use App\Http\Requests\UploadCsvRequest;
 use App\Jobs\ProcessCsvImport;
 use App\Models\Imports;
 use App\Repositories\ImportRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
@@ -27,14 +27,14 @@ class ImportController extends Controller
         $fullPath = storage_path(
             'app' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path)
         );
-        Log::info("Arquivo salvo em: {$fullPath}");
+        Log::info(ImportResponses::LOG_SAVED_IN->value . $fullPath);
 
         $import = Imports::create(['file_path' => $path]);
 
         ProcessCsvImport::dispatch($path, $import);
 
         return response()->json([
-            'message' => 'Arquivo adicionado a fila de importação',
+            'message' => ImportResponses::LOG_SAVED_IN,
             'link_status' => env('APP_URL') . "/api/import-status/{$import->id}",
         ], Response::HTTP_ACCEPTED);
     }

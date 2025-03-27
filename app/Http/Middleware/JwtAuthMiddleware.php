@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Middleware;
 
+use App\Enums\JwtResponses;
 use Closure;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -11,19 +12,17 @@ class JwtAuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         try {
-            // Tenta autenticar o token
             $user = JWTAuth::parseToken()->authenticate();
             if (!$user) {
                 return response()->json([
-                    'message' => 'Não autenticado.',
-                    'status' => 'error'
+                    'message' => JwtResponses::UNAUTHENTICATED,
+                    'status' => JwtResponses::ERROR
                 ], 401);
             }
         } catch (JWTException $e) {
-            // Qualquer erro relacionado ao token (ausente, inválido, expirado)
             return response()->json([
-                'message' => 'Não autenticado.',
-                'status' => 'error'
+                'message' => JwtResponses::UNAUTHENTICATED,
+                'status' => JwtResponses::ERROR
             ], 401);
         }
 

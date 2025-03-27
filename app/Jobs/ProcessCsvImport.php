@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Enums\ImportResponses;
+use App\Enums\ImportStatusResponses;
 use App\Models\Imports;
 use App\Services\CsvImportService;
 use Exception;
@@ -32,12 +34,12 @@ class ProcessCsvImport implements ShouldQueue
     public function handle(CsvImportService $csvImportService): void
     {
         try {
-            $this->import->update(['status' => 'processing']);
+            $this->import->update(['status' => ImportStatusResponses::PROCESSING]);
             $csvImportService->processCsv($this->filePath);
-            $this->import->update(['status' => 'completed']);
+            $this->import->update(['status' => ImportStatusResponses::COMPLETED]);
         } catch (\Exception $e) {
-            $this->import->update(['status' => 'failed']);
-            Log::error("Erro ao processar o CSV: " . $e->getMessage());
+            $this->import->update(['status' => ImportStatusResponses::COMPLETED]);
+            Log::error(ImportResponses::FILE_ADDED_TO_IMPORT_QUEUE->value . $e->getMessage());
 
             throw $e;
         }
