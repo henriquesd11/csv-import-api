@@ -22,9 +22,11 @@ class ImportController extends Controller
 
     public function upload(UploadCsvRequest $request): JsonResponse
     {
-        $path = $request->file('file')->store('uploads');
+        $path = 'public/' . $request->file('file')->store('uploads', 'public');
 
-        $fullPath = storage_path('app' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path));
+        $fullPath = storage_path(
+            'app' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path)
+        );
         Log::info("Arquivo salvo em: {$fullPath}");
 
         $import = Imports::create(['file_path' => $path]);
@@ -33,7 +35,7 @@ class ImportController extends Controller
 
         return response()->json([
             'message' => 'Arquivo adicionado a fila de importação',
-            'link_status' => env('APP_URL') . "/import-status/{$import->id}",
+            'link_status' => env('APP_URL') . "/api/import-status/{$import->id}",
         ], Response::HTTP_ACCEPTED);
     }
 

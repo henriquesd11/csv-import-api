@@ -19,7 +19,7 @@ class CsvImportService
     /**
      * @throws Exception
      */
-    public function processCsv($filePath): void
+    public function processCsv(string $filePath): void
     {
         $normalizedPath = str_replace('/', DIRECTORY_SEPARATOR, $filePath);
         $fullPath = storage_path('app' . DIRECTORY_SEPARATOR . $normalizedPath);

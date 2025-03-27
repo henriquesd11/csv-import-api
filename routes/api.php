@@ -10,6 +10,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::post('upload', [ImportController::class, 'upload'])->name('upload');
-Route::get('import-status/{id}', [ImportController::class, 'status'])->name('import-status');
-Route::get('users', [UserController::class, 'index'])->name('users');
+Route::middleware('jwt.auth')->group(function () {
+    Route::post('upload', [ImportController::class, 'upload'])->name('upload');
+    Route::get('import-status/{id}', [ImportController::class, 'status'])->name('import-status');
+    Route::get('users', [UserController::class, 'index'])->name('users');
+});
