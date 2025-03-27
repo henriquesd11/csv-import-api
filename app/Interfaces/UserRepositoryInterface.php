@@ -6,5 +6,5 @@ interface UserRepositoryInterface
 {
     public function create(array $data);
 
-    public function getPaginated(int $perPage);
+    public function getPaginated(int $perPage, int $page);
 }

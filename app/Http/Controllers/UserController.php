@@ -14,10 +14,12 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 10);
+        $page = $request->get('page', 1);
         return response()->json([
-            'data' => $this->userRepository->getPaginated(10)
+            'data' => $this->userRepository->getPaginated($perPage, $page)
         ]);
     }
 }

@@ -34,7 +34,7 @@ class ImportController extends Controller
         ProcessCsvImport::dispatch($path, $import);
 
         return response()->json([
-            'message' => ImportResponses::LOG_SAVED_IN,
+            'message' => ImportResponses::FILE_ADDED_TO_IMPORT_QUEUE->value,
             'link_status' => env('APP_URL') . "/api/import-status/{$import->id}",
         ], Response::HTTP_ACCEPTED);
     }

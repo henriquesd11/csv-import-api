@@ -14,8 +14,8 @@ class UserRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
-    public function getPaginated(int $perPage): LengthAwarePaginator
+    public function getPaginated(int $perPage, int $page): LengthAwarePaginator
     {
-        return User::paginate($perPage);
+        return User::query()->forPage($page, $perPage)->paginate($perPage, ['*'], 'page', $page);
     }
 }
